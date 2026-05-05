@@ -310,35 +310,35 @@
       return a;
     }
 
-    const words = [
-      '"I\'m not gettin\' near that"',
-      '"Not with a lot of enjoyment"',
-      'So there\'s a shark...',
-      'Tariffs',
-      'Optimization',
-      'Batteries',
-      'Arbitrage',
-      'Santa Barbara',
-      'Surfing',
-      'Industrial loads',
-      'Water',
-      'Energy flexibility',
-      'Utilization',
-      'Coordination',
-      'Technoeconomic analysis',
-      'Renewable energy',
-      'Convex',
-      'h', 'i', 'j', 'k', 'l', 'm', 'n',
-    ];
+    const grid = document.getElementById('grid');
 
-    {
-      const shuffled = shuffle(words);
-      const picked = shuffled.slice(0, 24);
-      const grid = document.getElementById('grid');
+    const IMAGE_MAP = {
+      '"I\'m not gettin\' near that"': 'not_gettin_near_that.png',
+      '"Not with a lot of enjoyment"': null,
+      'So there\'s a shark...':        'shark.png',
+      'Tariffs':                        'tariffs.png',
+      'Optimization':                   'optimization.png',
+      'Batteries':                      'batteries.png',
+      'Arbitrage':                      'arbitrage.png',
+      'Santa Barbara':                  'santa_barbara.png',
+      'Surfing':                        'surfing.png',
+      'Industrial loads':               'industrial_loads.png',
+      'Water':                          'water.png',
+      'Energy flexibility':             'energy_flexibility.png',
+      'Utilization':                    'utilization.png',
+      'Coordination':                   'coordination.png',
+      'Technoeconomic analysis':        'technoeconomic_analysis.png',
+      'Renewable energy':               null,
+    };
+
+    (async () => {
+      const text = await fetch('data/words.txt').then(r => r.text());
+      const words = text.split('\n').map(w => w.trim()).filter(Boolean);
+
+      const picked = shuffle(words).slice(0, 24);
 
       picked.slice(0, 12).forEach((word, i) => addCell(word, i));
 
-      // FREE space at position 12 (center of 5×5) — inner card flips on win
       const freeCell = document.createElement('div');
       freeCell.className = 'cell free';
 
@@ -360,26 +360,7 @@
       grid.appendChild(freeCell);
 
       picked.slice(12).forEach((word, i) => addCell(word, i + 13));
-    }
-
-    const IMAGE_MAP = {
-      '"I\'m not gettin\' near that"': 'not_gettin_near_that.png',
-      '"Not with a lot of enjoyment"': null,
-      'So there\'s a shark...':        'shark.png',
-      'Tariffs':                        'tariffs.png',
-      'Optimization':                   'optimization.png',
-      'Batteries':                      'batteries.png',
-      'Arbitrage':                      'arbitrage.png',
-      'Santa Barbara':                  'santa_barbara.png',
-      'Surfing':                        'surfing.png',
-      'Industrial loads':               'industrial_loads.png',
-      'Water':                          'water.png',
-      'Energy flexibility':             'energy_flexibility.png',
-      'Utilization':                    'utilization.png',
-      'Coordination':                   'coordination.png',
-      'Technoeconomic analysis':        'technoeconomic_analysis.png',
-      'Renewable energy':               null,
-    };
+    })();
 
     function addCell(word, id) {
       const input = document.createElement('input');
