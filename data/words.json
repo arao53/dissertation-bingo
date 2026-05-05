@@ -10,10 +10,11 @@
   "Industrial loads": "industrial_loads.png",
   "Water": "water.png",
   "Energy flexibility": "energy_flexibility.png",
-  "Utilization": "utilization.png",
   "Coordination": "coordination.png",
-  "Technoeconomic analysis": null,
   "Renewable energy": "windandsolar.png",
   "Convex": "convex.png",
-  "Climate change": "climatechange.jpg"
+  "Climate change": "climatechange.jpg",
+  "NAWI": "nawilogo.jpg",
+  "Chevron": "chevron.png",
+  "Probability": "probability.svg"
 }
