@@ -14,6 +14,9 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   deploy:
     environment:
@@ -41,10 +44,12 @@ jobs:
               "fields": "files(id,name)",
               "key": api_key,
           })
-          with urllib.request.urlopen(
-              f"https://www.googleapis.com/drive/v3/files?{params}"
-          ) as r:
-              files = json.load(r)["files"]
+          url = f"https://www.googleapis.com/drive/v3/files?{params}"
+          print(f"Querying: {url.replace(api_key, '***')}")
+          with urllib.request.urlopen(url) as r:
+              body = json.load(r)
+              print(f"API response: {json.dumps(body, indent=2)}")
+              files = body.get("files", [])
 
           os.makedirs("friends", exist_ok=True)
 
