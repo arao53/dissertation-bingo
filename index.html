@@ -67,30 +67,77 @@
     .card-wrap {
       width: 100%;
       max-width: 620px;
+      perspective: 1200px;
     }
 
-    .bingo-header {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 4px;
-      margin-bottom: 4px;
+    .card-flipper {
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .bingo-letter {
-      background: #8C1515;
+    .card-flipper.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .card-front {
+      position: relative;
+      transform-style: flat;
+    }
+
+    .card-back {
+      position: absolute;
+      inset: 0;
+      transform: rotateY(180deg);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #1a1a1a;
+    }
+
+    .card-back img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+
+    .card-back .win-label {
+      position: relative;
+      z-index: 1;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-style: italic;
       color: #fff;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: clamp(1.1rem, 3vw, 1.6rem);
-      font-weight: 700;
-      letter-spacing: 0.05em;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.7), 0 0 40px rgba(0,0,0,0.5);
       text-align: center;
-      padding: 0.55rem 0;
-      border-radius: 4px 4px 0 0;
+      padding: 1rem 1rem 0.25rem;
+    }
+
+    .card-back .win-sub {
+      position: relative;
+      z-index: 1;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      color: rgba(255,255,255,0.85);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+      text-align: center;
+      padding: 0 1rem 1rem;
+      letter-spacing: 0.02em;
     }
 
     .bingo-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 4px;
     }
 
@@ -163,94 +210,6 @@
       background: #a01818;
     }
 
-    /* ── FREE cell with 3-D flip ── */
-
-    .cell.free {
-      padding: 0;
-      overflow: hidden;
-      perspective: 500px;
-      cursor: default;
-      border-color: #2c2c2c;
-      pointer-events: none;
-      background: transparent;
-    }
-
-    .free-inner {
-      width: 100%;
-      min-height: 90px;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .free-inner.flipped {
-      transform: rotateY(180deg);
-    }
-
-    .free-front,
-    .free-back {
-      position: absolute;
-      inset: 0;
-      min-height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 0.5rem 0.35rem;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-weight: 700;
-      font-size: clamp(0.65rem, 1.5vw, 0.85rem);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      line-height: 1.35;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-
-    .free-front {
-      background: #2c2c2c;
-      color: #f5f0e8;
-    }
-
-    .free-back {
-      transform: rotateY(180deg);
-      background: #1f5c2e;
-      color: #fff;
-    }
-
-    /* ── Tally.so survey section ── */
-
-    #survey-section {
-      display: none;
-      width: 100%;
-      max-width: 620px;
-      margin-top: 1.5rem;
-    }
-
-    #survey-section .survey-intro {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-
-    #survey-section .survey-intro .eyebrow {
-      margin-bottom: 0.3rem;
-    }
-
-    #survey-section .survey-intro p {
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: 0.88rem;
-      color: #555;
-    }
-
-    #tally-iframe {
-      width: 100%;
-      min-height: 520px;
-      border: 1px solid #d8d0c4;
-      border-radius: 6px;
-      background: #fff;
-      display: block;
-    }
-
     footer {
       margin-top: 2rem;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -266,41 +225,30 @@
     <p class="eyebrow">Stanford University &middot; PhD Defense</p>
     <h1>Akshay&rsquo;s Defense <em>Bingo</em></h1>
     <p class="description">
-      Listen carefully during the talk. Mark a square every time you hear (or see)
-      the phrase. First to five in a row&mdash;row, column, or diagonal&mdash;wins.
+      Listen carefully during the talk and Q&A. Mark a square every time you hear (or see)
+      the phrase. Find <strong>every</strong> square to win - there's a surprise at the end.
       <strong>Your card has been shuffled just for you.</strong>
     </p>
   </header>
 
   <div class="card-wrap">
-    <div class="bingo-header">
-      <div class="bingo-letter">B</div>
-      <div class="bingo-letter">I</div>
-      <div class="bingo-letter">N</div>
-      <div class="bingo-letter">G</div>
-      <div class="bingo-letter">O</div>
+    <div class="card-flipper" id="card-flipper">
+      <div class="card-face card-front">
+        <div class="bingo-grid" id="grid"></div>
+      </div>
+      <div class="card-face card-back">
+        <img src="images/sinan.png" alt="">
+        <span class="win-label">You finished!</span>
+        <span class="win-sub">enjoy sinan's face for the rest of the talk</span>
+      </div>
     </div>
-    <div class="bingo-grid" id="grid"></div>
   </div>
-
-  <section id="survey-section">
-    <div class="survey-intro">
-      <p class="eyebrow">Bingo complete</p>
-      <p>Fill out the tally while the talk wraps up.</p>
-    </div>
-    <iframe id="tally-iframe" src="" frameborder="0" allowfullscreen></iframe>
-  </section>
 
   <footer>Reload the page to get a new card.</footer>
 
-  <script>
-    // ── Config ──────────────────────────────────────────────────────────────
-    // Replace TALLY_FORM_URL with your tally.so form URL, e.g. https://tally.so/r/abcd12
-    // Replace TALLY_TIMESTAMP_FIELD with the exact label of the first field in your form.
-    const TALLY_FORM_URL = 'https://tally.so/r/44PGBd';
-    const TALLY_TIMESTAMP_FIELD = 'Timestamp';
-    // ────────────────────────────────────────────────────────────────────────
+  <button id="test-win-btn" onclick="triggerTestWin()" style="margin-top:1rem;padding:0.4rem 0.9rem;font-size:0.75rem;font-family:'Helvetica Neue',sans-serif;background:#444;color:#fff;border:none;border-radius:3px;cursor:pointer;opacity:0.5;">🧪 Test Win</button>
 
+  <script>
     function shuffle(arr) {
       const a = arr.slice();
       for (let i = a.length - 1; i > 0; i--) {
@@ -312,67 +260,27 @@
 
     const grid = document.getElementById('grid');
 
-    const IMAGE_MAP = {
-      '"I\'m not gettin\' near that"': 'not_gettin_near_that.png',
-      '"Not with a lot of enjoyment"': null,
-      'So there\'s a shark...':        'shark.png',
-      'Tariffs':                        'tariffs.png',
-      'Optimization':                   'optimization.png',
-      'Batteries':                      'batteries.png',
-      'Arbitrage':                      'arbitrage.png',
-      'Santa Barbara':                  'santa_barbara.png',
-      'Surfing':                        'surfing.png',
-      'Industrial loads':               'industrial_loads.png',
-      'Water':                          'water.png',
-      'Energy flexibility':             'energy_flexibility.png',
-      'Utilization':                    'utilization.png',
-      'Coordination':                   'coordination.png',
-      'Technoeconomic analysis':        'technoeconomic_analysis.png',
-      'Renewable energy':               null,
-    };
-
     (async () => {
-      const text = await fetch('data/words.txt').then(r => r.text());
-      const words = text.split('\n').map(w => w.trim()).filter(Boolean);
+      const IMAGE_MAP = await fetch('data/words.json').then(r => r.json());
+      const words = Object.keys(IMAGE_MAP);
 
-      const picked = shuffle(words).slice(0, 24);
+      const picked = shuffle(words).slice(0, 16);
 
-      picked.slice(0, 12).forEach((word, i) => addCell(word, i));
-
-      const freeCell = document.createElement('div');
-      freeCell.className = 'cell free';
-
-      const freeInner = document.createElement('div');
-      freeInner.className = 'free-inner';
-      freeInner.id = 'free-inner';
-
-      const freeFront = document.createElement('div');
-      freeFront.className = 'free-front';
-      freeFront.innerHTML = 'Free<br>Space';
-
-      const freeBack = document.createElement('div');
-      freeBack.className = 'free-back';
-      freeBack.innerHTML = 'You<br>finished!';
-
-      freeInner.appendChild(freeFront);
-      freeInner.appendChild(freeBack);
-      freeCell.appendChild(freeInner);
-      grid.appendChild(freeCell);
-
-      picked.slice(12).forEach((word, i) => addCell(word, i + 13));
+      picked.forEach((word, i) => addCell(word, i, IMAGE_MAP));
     })();
 
-    function addCell(word, id) {
+    function addCell(word, id, imageMap) {
       const input = document.createElement('input');
       input.type = 'checkbox';
       input.id = 'c' + id;
+      input.dataset.word = word;
       input.addEventListener('change', onCellChange);
 
       const label = document.createElement('label');
       label.className = 'cell';
       label.htmlFor = 'c' + id;
 
-      const imgFile = IMAGE_MAP[word];
+      const imgFile = imageMap[word];
       if (imgFile) {
         const img = document.createElement('img');
         img.src = 'images/' + imgFile;
@@ -391,51 +299,50 @@
 
     // ── Win detection ────────────────────────────────────────────────────────
 
-    const WIN_LINES = [
-      [0,1,2,3,4], [5,6,7,8,9], [10,11,12,13,14], [15,16,17,18,19], [20,21,22,23,24],
-      [0,5,10,15,20], [1,6,11,16,21], [2,7,12,17,22], [3,8,13,18,23], [4,9,14,19,24],
-      [0,6,12,18,24], [4,8,12,16,20]
-    ];
-
     function isChecked(pos) {
-      if (pos === 12) return true;
       const cb = document.getElementById('c' + pos);
       return cb ? cb.checked : false;
     }
 
     function hasWon() {
-      return WIN_LINES.some(line => line.every(pos => isChecked(pos)));
+      return Array.from({length: 16}, (_, i) => i).every(pos => isChecked(pos));
     }
 
-    let winTriggered = false;
+    let winActive = false;
 
     function onCellChange() {
-      if (!winTriggered && hasWon()) {
-        winTriggered = true;
+      const won = hasWon();
+      if (won && !winActive) {
+        winActive = true;
         onWin();
+      } else if (!won && winActive) {
+        winActive = false;
+        onUnwin();
       }
     }
 
     // ── Win handler ──────────────────────────────────────────────────────────
 
     function onWin() {
-      // 1. Flip the FREE center cell
-      document.getElementById('free-inner').classList.add('flipped');
+      document.querySelectorAll('.cell .word').forEach(el => el.textContent = '');
+      document.getElementById('card-flipper').classList.add('flipped');
+    }
 
-      // 2. Build the tally.so URL with a prefilled timestamp
-      const ts = new Date().toLocaleString('en-US', {
-        month: 'short', day: 'numeric', year: 'numeric',
-        hour: '2-digit', minute: '2-digit', second: '2-digit'
+    function triggerTestWin() {
+      document.querySelectorAll('.bingo-grid input[type="checkbox"]').forEach(cb => {
+        cb.checked = true;
       });
-      const url = new URL(TALLY_FORM_URL);
-      url.searchParams.set(TALLY_TIMESTAMP_FIELD, ts);
-      url.searchParams.set('transparentBackground', '1');
-      document.getElementById('tally-iframe').src = url.toString();
+      winActive = true;
+      onWin();
+    }
 
-      // 3. Reveal the survey and scroll to it
-      const section = document.getElementById('survey-section');
-      section.style.display = 'block';
-      setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    function onUnwin() {
+      document.getElementById('card-flipper').classList.remove('flipped');
+      document.querySelectorAll('.cell .word').forEach(el => {
+        const cb = document.getElementById(el.closest('label').htmlFor);
+        const word = cb ? cb.dataset.word : '';
+        el.textContent = word;
+      });
     }
   </script>
 
