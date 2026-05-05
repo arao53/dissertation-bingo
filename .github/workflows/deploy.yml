@@ -1,0 +1,73 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch friends from Google Drive
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, urllib.request, urllib.parse
+
+          api_key = os.environ["GOOGLE_API_KEY"]
+          folder_id = os.environ["DRIVE_FOLDER_ID"]
+
+          # List all files in the folder
+          params = urllib.parse.urlencode({
+              "q": f"'{folder_id}' in parents",
+              "fields": "files(id,name)",
+              "key": api_key,
+          })
+          with urllib.request.urlopen(
+              f"https://www.googleapis.com/drive/v3/files?{params}"
+          ) as r:
+              files = json.load(r)["files"]
+
+          os.makedirs("friends", exist_ok=True)
+
+          for f in files:
+              url = (
+                  f"https://www.googleapis.com/drive/v3/files/{f['id']}"
+                  f"?alt=media&key={api_key}"
+              )
+              dest = os.path.join("friends", f["name"])
+              print(f"Downloading {f['name']}...")
+              urllib.request.urlretrieve(url, dest)
+
+          print(f"Done — {len(files)} files downloaded.")
+          EOF
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

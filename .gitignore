@@ -219,3 +219,6 @@ __marimo__/
 
 # claude
 .claude/
+
+# friends
+friends/
