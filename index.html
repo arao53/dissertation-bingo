@@ -123,20 +123,6 @@
       padding: 1rem 1rem 0.25rem;
     }
 
-    .card-back .win-sub {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 1;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: clamp(0.8rem, 2vw, 1rem);
-      color: #222;
-      text-align: center;
-      padding: 0.5rem 1rem;
-      letter-spacing: 0.02em;
-      background: rgba(255,255,255,0.5);
-    }
 
     .next-btn {
       display: none;
@@ -352,7 +338,7 @@
       </div>
       <div class="card-face card-back">
         <img id="win-img" src="" alt="">
-        <span class="win-sub"></span>
+        <div class="win-label" style="position:absolute;bottom:0;left:0;right:0;z-index:1;background:linear-gradient(transparent,rgba(0,0,0,0.6));padding:1.5rem 1rem 1rem;font-family:Georgia,'Times New Roman',serif;font-size:clamp(0.85rem,2.5vw,1.1rem);font-style:italic;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,0.8);text-align:center;">Surprise! Here are some pics with my friends over the last few years</div>
       </div>
     </div>
   </div>
@@ -362,21 +348,12 @@
   <button class="next-btn" id="next-btn" onclick="nextFriend()">Next ›</button>
 
   <script>
+    const SURPRISE_IMAGES = ['IMG_4324.JPG','IMG_4329.JPG','IMG_6630.JPG','IMG_8400.JPG','amber_peak.png','bluntie_palpacle.png','c5d05b1a-fade-4b1b-919a-195ea28dccd9.JPG','cadua_income.png','cedar_bloom.png','chiggak_operatee.png','cobalt_ridge.png','coral_dusk.png','crimson_leaf.png','d08baa3b-9a20-481d-9384-18104c6a4873.JPG','empirics_poyou.png','fatless_womera.png','gunfire_topic.png','idiotic_agacante.png','iron_grove.png','jade_storm.png','keftian_exam.png','lordling_riddam.png','minseito_outwrite.png','misty_falls.png','mormyr_gullion.png','profuse_bihourly.png','rainbird_voicing.png','ripply_washwork.png','rusty_bell.png','sabbath_auximone.png','silicium_uneasily.png','silver_fox.png','subsoil_upraise.png','succinct_shirley.png','tenrec_wiggle.png','unbeaded_baloghia.png','velvet_cloud.png','wabster_memorial.png'];
     let friendEntries = [];
     let friendIndex = 0;
 
-    fetch('friends/friend_descriptions.json')
-      .then(r => r.json())
-      .then(descriptions => {
-        friendEntries = shuffle(Object.entries(descriptions));
-        friendIndex = 0;
-        showFriend(friendIndex);
-      });
-
     function showFriend(idx) {
-      const [desc, file] = friendEntries[idx];
-      document.getElementById('win-img').src = 'friends/' + file;
-      document.querySelector('.win-sub').textContent = `Here's ${desc}!`;
+      document.getElementById('win-img').src = 'surprise/' + friendEntries[idx];
     }
 
     function nextFriend() {
@@ -464,6 +441,11 @@
     // ── Win handler ──────────────────────────────────────────────────────────
 
     function onWin() {
+      if (friendEntries.length === 0) {
+        friendEntries = shuffle(SURPRISE_IMAGES.slice());
+        friendIndex = 0;
+        showFriend(friendIndex);
+      }
       document.querySelectorAll('.cell .word').forEach(el => el.textContent = '');
       document.getElementById('card-flipper').classList.add('flipped');
       document.getElementById('next-btn').classList.add('visible');

@@ -14,9 +14,6 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   deploy:
     environment:
@@ -27,46 +24,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Fetch friends from Google Drive
-        env:
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-          DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
-        run: |
-          python3 - <<'EOF'
-          import json, os, urllib.request, urllib.parse
-
-          api_key = os.environ["GOOGLE_API_KEY"]
-          folder_id = os.environ["DRIVE_FOLDER_ID"]
-
-          # List all files in the folder
-          params = urllib.parse.urlencode({
-              "q": f"'{folder_id}' in parents",
-              "fields": "files(id,name)",
-              "key": api_key,
-          })
-          url = f"https://www.googleapis.com/drive/v3/files?{params}"
-          print(f"Querying: {url.replace(api_key, '***')}")
-          with urllib.request.urlopen(url) as r:
-              body = json.load(r)
-              print(f"API response: {json.dumps(body, indent=2)}")
-              files = body.get("files", [])
-
-          os.makedirs("friends", exist_ok=True)
-
-          for f in files:
-              url = (
-                  f"https://www.googleapis.com/drive/v3/files/{f['id']}"
-                  f"?alt=media&key={api_key}"
-              )
-              dest = os.path.join("friends", f["name"])
-              print(f"Downloading {f['name']}...")
-              urllib.request.urlretrieve(url, dest)
-
-          print(f"Done — {len(files)} files downloaded.")
-          EOF
-
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
+      - name: Install ImageMagick
+        run: sudo apt-get install -y imagemagick
+
+      - name: Convert HEIC files to WebP
+        run: python3 convert_heic.py
+
+      - name: Compress existing PNGs/JPGs to WebP
+        run: python3 compress_existing.py
+
+      - name: Update surprise images list
+        run: python3 update_surprise_images.py
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
