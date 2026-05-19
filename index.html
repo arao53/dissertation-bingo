@@ -360,6 +360,7 @@
 
   <footer>Reload the page to get a new card.</footer>
 
+  <button class="next-btn" id="back-btn" onclick="prevFriend()">‹ Back</button>
   <button class="next-btn" id="next-btn" onclick="nextFriend()">Next ›</button>
 
   <script>
@@ -373,6 +374,11 @@
 
     function nextFriend() {
       friendIndex = (friendIndex + 1) % friendEntries.length;
+      showFriend(friendIndex);
+    }
+
+    function prevFriend() {
+      friendIndex = (friendIndex - 1 + friendEntries.length) % friendEntries.length;
       showFriend(friendIndex);
     }
 
@@ -463,6 +469,7 @@
       }
       document.querySelectorAll('.cell .word').forEach(el => el.textContent = '');
       document.getElementById('card-flipper').classList.add('flipped');
+      document.getElementById('back-btn').classList.add('visible');
       document.getElementById('next-btn').classList.add('visible');
     }
 
@@ -476,6 +483,7 @@
 
     function onUnwin() {
       document.getElementById('card-flipper').classList.remove('flipped');
+      document.getElementById('back-btn').classList.remove('visible');
       document.getElementById('next-btn').classList.remove('visible');
       document.querySelectorAll('.cell .word').forEach(el => {
         const cb = document.getElementById(el.closest('label').htmlFor);
