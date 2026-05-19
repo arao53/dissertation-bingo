@@ -1,6 +1,5 @@
 {
-  "\"Not with a lot of enjoyment\"": "not_with_a_lot_of_enjoyment.png",
-  "So there's a shark...": "shark.png",
+  "There's a shark...": "shark.png",
   "Tariffs": "tariff.jpeg",
   "Optimization": "optimization.png",
   "Batteries": "batteries.avif",
@@ -17,5 +16,6 @@
   "NAWI": "nawilogo.jpg",
   "Chevron": "chevron.png",
   "Probability": "probability.svg",
-  "Membrane": "membrane.webp"
+  "Membrane": "membrane.webp",
+  "Battery": "battery.png"
 }

@@ -341,7 +341,7 @@
     <h1>Akshay&rsquo;s Defense <em>Bingo</em></h1>
     <p class="description">
       Listen carefully during the talk and acknowledgements. Mark a square every time you hear (or see)
-      the phrase. Some of them may be hidden in figures. Find <strong>every</strong> square to win - there's a surprise at the end.
+      the phrase or image. Some of them may be hidden in figures. Find <strong>every</strong> square to win - there's a surprise at the end.
       <strong>Your card has been shuffled just for you.</strong>
     </p>
   </header>
@@ -392,7 +392,7 @@
       const words = Object.keys(IMAGE_MAP);
 
       const exclusive = ['NAWI', 'Chevron'];
-      const guaranteed = ['So there\'s a shark...'];
+      const guaranteed = ['There\'s a shark...'];
       const chosen = exclusive[Math.floor(Math.random() * exclusive.length)];
       const fixed = [chosen, ...guaranteed];
       const pool = words.filter(w => !exclusive.includes(w) && !guaranteed.includes(w));
