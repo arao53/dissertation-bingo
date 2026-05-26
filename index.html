@@ -398,7 +398,7 @@
       const words = Object.keys(IMAGE_MAP);
 
       const exclusive = ['NAWI', 'Chevron'];
-      const guaranteed = ['There\'s a shark...'];
+      const guaranteed = ['Shark'];
       const chosen = exclusive[Math.floor(Math.random() * exclusive.length)];
       const fixed = [chosen, ...guaranteed];
       const pool = words.filter(w => !exclusive.includes(w) && !guaranteed.includes(w));

@@ -1,11 +1,10 @@
 {
-  "There's a shark...": "shark.png",
+  "Shark": "shark.png",
   "Tariffs": "tariff.jpeg",
   "Optimization": "optimization.png",
   "Batteries": "batteries.avif",
   "Arbitrage": "arbitrage.png",
   "Santa Barbara": "santa_barbara.png",
-  "Surfing": "surfing.png",
   "Industrial loads": "industrial_loads.png",
   "Water": "water.png",
   "Energy flexibility": "energy_flexibility.png",
@@ -16,5 +15,10 @@
   "NAWI": "nawilogo.jpg",
   "Chevron": "chevron.png",
   "Probability": "probability.svg",
-  "Membrane": "membrane.webp"
+  "Membrane": "membrane.webp",
+  "Algae" : "algae.webp",
+  "Failure" : "failure.jpg",
+  "Pump" : "pump.webp",
+  "Decomissioning" : "decomission.jpg",
+  "UV" : "uv.webp"
 }
